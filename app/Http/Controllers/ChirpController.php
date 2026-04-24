@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ChirpController extends Controller
 {
@@ -26,9 +27,6 @@ class ChirpController extends Controller
                 'required',
                 'string',
                 'max:255',
-                /*Rule::unique('chirps')->where(function ($query) use ($user) {
-                    return $query->where('user_id', $user->id);
-                })*/
             ],
         ], [
             'message.required' => 'Please write something to chirp!',
@@ -36,10 +34,7 @@ class ChirpController extends Controller
         ]);
 
         // Create the chirp (no user for now - we'll add auth later)
-        \App\Models\Chirp::create([
-            'message' => $validated['message'],
-            'user_id' => null, // We'll add authentication in lesson 11
-        ]);
+        $request->user()->chirps()->create($validated);
 
         // Redirect back to the feed
         return redirect('/')->with('success', 'Chirp created!');
@@ -53,12 +48,10 @@ class ChirpController extends Controller
 
     public function update(Request $request, Chirp $chirp)
     {
-        // Authorize
-        /* if ($request->user()->cannot('update', $chirp)) {
-         abort(403);
-        } */
-        // It can also be written as:
-        // $this->authorize('update', $chirp);
+        // Authorize can be written as:
+        if ($request->user()->cannot('update', $chirp)) {
+            abort(403);
+        }
 
         // Validate
         $validated = $request->validate([
@@ -71,8 +64,12 @@ class ChirpController extends Controller
         return redirect('/')->with('success', 'Chirp updated!');
     }
 
-    public function destroy(Chirp $chirp)
+    public function destroy(Request $request, Chirp $chirp)
     {
+        if ($request->user()->cannot('delete', $chirp)) {
+            abort(403);
+        }
+
         $chirp->delete();
 
         return redirect('/')->with('success', 'Chirp deleted!');
