@@ -6,14 +6,14 @@
             @if ($chirp->user)
                 <div class="avatar">
                     <div class="size-10 rounded-full">
-                        <img src="https://avatars.laravel.cloud/{{ urlencode($chirp->user->email) }}"
+                        <img src="https://www.gravatar.com/avatar/{{ $chirp->gravatarIcon() }}"
                             alt="{{ $chirp->user->name }}'s avatar" class="rounded-full" />
                     </div>
                 </div>
             @else
                 <div class="avatar placeholder">
                     <div class="size-10 rounded-full">
-                        <img src="https://avatars.laravel.cloud/f61123d5-0b27-434c-a4ae-c653c7fc9ed6?vibe=stealth"
+                        <img src="https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66"
                             alt="Anonymous User" class="rounded-full" />
                     </div>
                 </div>

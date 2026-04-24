@@ -16,4 +16,11 @@ class Chirp extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function gravatarIcon(): string
+    {
+        $email = $this->user->email;
+        $hash = hash('sha256', strtolower(trim($email)));
+        return "https://www.gravatar.com/avatar/$hash?s=200&d=identicon";
+    }
 }
