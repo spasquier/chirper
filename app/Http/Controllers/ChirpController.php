@@ -40,15 +40,17 @@ class ChirpController extends Controller
         return redirect('/')->with('success', 'Chirp created!');
     }
 
-    public function edit(Chirp $chirp)
+    public function edit(Request $request, Chirp $chirp)
     {
-        // We'll add authorization in lesson 11
+        if ($request->user()->cannot('update', $chirp)) {
+            abort(403);
+        }
+
         return view('chirps.edit', compact('chirp'));
     }
 
     public function update(Request $request, Chirp $chirp)
     {
-        // Authorize can be written as:
         if ($request->user()->cannot('update', $chirp)) {
             abort(403);
         }
