@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ChirpController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $chirps = Chirp::with('user')
@@ -42,18 +44,20 @@ class ChirpController extends Controller
 
     public function edit(Request $request, Chirp $chirp)
     {
-        if ($request->user()->cannot('update', $chirp)) {
+        /*if ($request->user()->cannot('update', $chirp)) {
             abort(403);
-        }
+        }*/
+        $this->authorize('update', $chirp);
 
         return view('chirps.edit', compact('chirp'));
     }
 
     public function update(Request $request, Chirp $chirp)
     {
-        if ($request->user()->cannot('update', $chirp)) {
+        /*if ($request->user()->cannot('update', $chirp)) {
             abort(403);
-        }
+        }*/
+        $this->authorize('update', $chirp);
 
         // Validate
         $validated = $request->validate([
@@ -68,9 +72,10 @@ class ChirpController extends Controller
 
     public function destroy(Request $request, Chirp $chirp)
     {
-        if ($request->user()->cannot('delete', $chirp)) {
+        /*if ($request->user()->cannot('delete', $chirp)) {
             abort(403);
-        }
+        }*/
+        $this->authorize('update', $chirp);
 
         $chirp->delete();
 
