@@ -17,7 +17,7 @@ class Chirp extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function gravatarIcon(): string
+    public function gravatarUrl(): string
     {
         $email = $this->user->email;
         $hash = hash('sha256', strtolower(trim($email)));
