@@ -7,6 +7,23 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Running this project locally
+
+Setup project (install php dependencies, copy .env, generate secrey key, create db, install js dependencies):
+```bash
+composer run setup
+```
+
+Seed the database:
+```bash
+php artisan db:seed --class=ChirpSeeder --force
+```
+
+Run the app:
+```bash
+composer run dev
+```
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
